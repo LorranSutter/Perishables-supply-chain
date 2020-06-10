@@ -4,6 +4,6 @@
 
 <p align="center">
   
-<img src='https://res.cloudinary.com/lorransutter/image/upload/v1591801515/Perishables_supply_chain/Perishables_flow.png' height=500/>
+<img src='https://res.cloudinary.com/lorransutter/image/upload/v1591823410/Perishables_supply_chain/Flow_chart.png' height=500/>
 
 </p>
