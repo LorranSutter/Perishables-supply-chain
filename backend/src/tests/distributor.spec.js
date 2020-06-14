@@ -119,7 +119,7 @@ describe('Distributor', () => {
             });
     });
 
-    it('Should to login', async (done) => {
+    it('Should be able to login', async (done) => {
         const newDistributor = new Distributor(randomGenerator.newDistributor());
 
         await new Distributor(newDistributor).save();
