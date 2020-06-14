@@ -102,3 +102,5 @@ dist
 
 # TernJS port file
 .tern-port
+backend/src/config/dbURL.json
+backend/src/config/privateKey.json
