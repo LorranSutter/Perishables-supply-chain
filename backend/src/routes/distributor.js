@@ -8,7 +8,7 @@ routes.get('/', distributor_controller.index);
 
 routes.get('/index', distributor_controller.index);
 
-routes.post('/new', distributor_controller.create_distributor);
+routes.post('/new', distributor_controller.create);
 
 routes.post('/login', distributor_controller.login);
 

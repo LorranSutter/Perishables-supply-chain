@@ -15,7 +15,7 @@ exports.index = (req, res, next) => {
         });
 }
 
-exports.create_distributor = (req, res, next) => {
+exports.create = (req, res, next) => {
 
     const distributor = new Distributor(
         {
