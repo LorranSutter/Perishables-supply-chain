@@ -6,7 +6,7 @@ exports.registration = [
         .body('name')
         .isLength({ min: 1 })
         .trim()
-        .withMessage('First name must be specified.')
+        .withMessage('Name must be specified.')
         .isAlphanumeric()
         .withMessage('Name has non-alphanumeric characters.')
         .escape(),
@@ -20,7 +20,7 @@ exports.registration = [
         .body('address', 'Invalid date of birth')
         .trim()
         .isLength({ min: 40, max: 42 })
-        .withMessage('Address name must be specified.')
+        .withMessage('Address must be specified.')
         .matches(/^(0x)?[\d\w]{40}$/)
         .withMessage('Invalid address.')
         .escape(),
@@ -37,7 +37,7 @@ exports.login = [
         .body('name')
         .isLength({ min: 1 })
         .trim()
-        .withMessage('First name must be specified.')
+        .withMessage('Name must be specified.')
         .isAlphanumeric()
         .withMessage('Name has non-alphanumeric characters.')
         .escape(),

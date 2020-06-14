@@ -40,6 +40,41 @@ describe('Distributor', () => {
             });
     });
 
+    it('Cannot create a new distributor, because all fields are not specified', (done) => {
+        request
+            .post('/distributors/new')
+            .send({})
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(422);
+                expect(res.body.errors).toContainEqual({ "name": "Name must be specified." });
+                expect(res.body.errors).toContainEqual({ "name": "Name has non-alphanumeric characters." });
+                expect(res.body.errors).toContainEqual({ "password": "Password must be specified." });
+                expect(res.body.errors).toContainEqual({ "address": "Address must be specified." });
+
+                done();
+            });
+    });
+
+    it('Cannot create a new distributor, because address is invalid', (done) => {
+        const newDistributor = randomGenerator.newDistributor();
+        newDistributor.address += "123";
+
+        request
+            .post('/distributors/new')
+            .send(newDistributor)
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(422);
+                expect(res.body.errors).toContainEqual({ "address": "Invalid address." });
+
+                done();
+            });
+    });
+
+
     it('Should list all distributors', async (done) => {
         const newDistributor1 = new Distributor(randomGenerator.newDistributor());
         const newDistributor2 = new Distributor(randomGenerator.newDistributor());
@@ -91,12 +126,65 @@ describe('Distributor', () => {
 
         request
             .post('/distributors/login')
-            .send({ name: newDistributor.name, password: newDistributor.password })
+            .send(newDistributor)
             .end(function (err, res) {
                 if (err) { return done(err); }
 
                 expect(res.status).toBe(200);
                 expect(res.body.distributorJWT).toMatch(/^[\d\w-_=]+\.[\d\w-_=]+\.?[\d\w-_.+\/=]*$/);
+
+                done();
+            });
+    });
+
+    it('Cannot login, because all fields are not specified', (done) => {
+        request
+            .post('/distributors/login')
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(422);
+                expect(res.body.errors).toContainEqual({ "name": "Name must be specified." });
+                expect(res.body.errors).toContainEqual({ "name": "Name has non-alphanumeric characters." });
+                expect(res.body.errors).toContainEqual({ "password": "Password must be specified." });
+
+                done();
+            });
+    });
+
+    it('Cannot login, because name is invalid', async (done) => {
+        const newDistributor = new Distributor(randomGenerator.newDistributor());
+        await newDistributor.save();
+
+        newDistributor.name = "123";
+
+        request
+            .post('/distributors/login')
+            .send(newDistributor)
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(401);
+                expect(res.body).toEqual({ "message": "Invalid name" });
+
+                done();
+            });
+    });
+
+    it('Cannot login, because password is invalid', async (done) => {
+        const newDistributor = new Distributor(randomGenerator.newDistributor());
+        await newDistributor.save();
+
+        newDistributor.password = "123";
+
+        request
+            .post('/distributors/login')
+            .send(newDistributor)
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(401);
+                expect(res.body).toEqual({ "message": "Invalid password" });
 
                 done();
             });

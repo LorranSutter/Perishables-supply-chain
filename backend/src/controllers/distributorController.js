@@ -37,17 +37,17 @@ exports.login = async (req, res) => {
     const password = req.body.password;
 
     if (!name || !password) {
-        res.status(401).json({ message: 'Invalid name/password' });
+        return res.status(401).json({ message: 'Invalid name/password' });
     }
 
     const distributor = await Distributor.findOne({ name });
     if (!distributor) {
-        res.status(401).json({ message: 'Invalid name' });
+        return res.status(401).json({ message: 'Invalid name' });
     }
 
     const isMatch = await bcrypt.compare(password, distributor.password);
     if (!isMatch) {
-        res.status(401).json({ message: 'Invalid password' });
+        return res.status(401).json({ message: 'Invalid password' });
     }
 
     const distributorJWT = jwt.sign({ name }, privateKey, { algorithm: 'HS256' });
