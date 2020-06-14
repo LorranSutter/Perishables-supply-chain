@@ -10,4 +10,6 @@ routes.get('/index', distributor_controller.index);
 
 routes.post('/new', distributor_controller.create_distributor);
 
+routes.post('/login', distributor_controller.login);
+
 module.exports = routes;
