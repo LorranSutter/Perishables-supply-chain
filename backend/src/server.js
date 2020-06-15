@@ -2,9 +2,6 @@ const app = require('./app');
 
 const InitiateMongoServer = require('./db/connection');
 
-const { dev } = require('./config/dbURL.json');
-const mongoURI = process.env.MONGODB_URI || dev;
+InitiateMongoServer(process.env.MONGODB_URI_DEV);
 
-InitiateMongoServer(mongoURI);
-
-app.listen(5000);
+app.listen(process.env.PORT);

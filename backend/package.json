@@ -23,9 +23,11 @@
   "author": "Lorran Sutter",
   "license": "MIT",
   "dependencies": {
+    "async": "^3.2.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "ethereumjs-util": "^7.0.2",
     "express": "^4.17.1",
     "express-validator": "^6.5.0",

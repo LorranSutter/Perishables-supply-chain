@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const web3 = require('web3');
 
 const Distributor = require('../models/distributor');
-const { privateKey } = require('../config/privateKey.json');
 const connectionWeb3 = require('../connectionWeb3');
 
 exports.index = (req, res, next) => {
@@ -52,7 +51,7 @@ exports.login = async (req, res) => {
         return res.status(401).json({ message: 'Invalid password' });
     }
 
-    const distributorJWT = jwt.sign({ name }, privateKey, { algorithm: 'HS256' });
+    const distributorJWT = jwt.sign({ name }, process.env.PRIVATE_KEY, { algorithm: 'HS256' });
 
     res.status(200).json({ distributorJWT });
 }

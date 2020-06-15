@@ -1,5 +1,5 @@
 const app = require('../app');
-const randomGenerator = require('./randomGenerator');
+const randomGenerator = require('../utils/randomGenerator');
 
 const Distributor = require('../models/distributor');
 
@@ -8,8 +8,7 @@ const request = supertest(app);
 
 const mongoose = require('mongoose');
 const InitiateMongoServer = require('../db/connection');
-const { test } = require('../config/dbURL.json');
-const mongoURI = process.env.MONGODB_URI || test;
+const mongoURI = process.env.MONGODB_URI_TEST;
 
 describe('Distributor', () => {
 
