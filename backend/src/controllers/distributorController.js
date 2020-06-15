@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const web3 = require('web3');
 
 const Distributor = require('../models/distributor');
 const { privateKey } = require('../config/privateKey.json');
@@ -61,7 +62,7 @@ exports.batteryCurrentConditions = (req, res, next) => {
         .getBatteryCurrentConditions(req.body.token)
         .then((conditions) => {
             console.log(conditions)
-            res.json(conditions);
+            res.json(web3.utils.toAscii(bytes));
         })
         .catch(err => {
             return next(err);
@@ -73,6 +74,7 @@ exports.batteryCurrentLocation = (req, res, next) => {
         .getBatteryCurrentLocation(req.body.token)
         .then((location) => {
             console.log(location)
+            //web3.utils.toAscii(bytes)
             res.json(location);
         })
         .catch(err => {

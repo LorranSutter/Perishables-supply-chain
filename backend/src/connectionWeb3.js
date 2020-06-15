@@ -19,19 +19,22 @@ const connectionWeb3 = {
     async getBatteryCurrentConditions(distributorAddress, token) {
         return await contract.methods
             .getBatteryCurrentConditions(token)
-            .send({ from: distributorAddress });
+            .send({ from: distributorAddress })
+            .call();
     },
 
     async getBatteryCurrentLocation(distributorAddress, token) {
         return await contract.methods
             .getBatteryCurrentLocation(token)
-            .send({ from: distributorAddress });
+            .send({ from: distributorAddress })
+            .call();
     },
 
     async getBatteryCurrentHolder(distributorAddress, token) {
         return await contract.methods
             .getBatteryCurrentHolder(token)
-            .send({ from: distributorAddress });
+            .send({ from: distributorAddress })
+            .call();
     }
 }
 
