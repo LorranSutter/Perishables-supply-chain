@@ -30,7 +30,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.5.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.18"
+    "mongoose": "^5.9.18",
+    "web3": "^1.2.9"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",

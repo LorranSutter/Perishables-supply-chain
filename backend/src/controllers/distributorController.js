@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const Distributor = require('../models/distributor');
 const { privateKey } = require('../config/privateKey.json');
+const connectionWeb3 = require('../connectionWeb3');
 
 exports.index = (req, res, next) => {
 
@@ -53,4 +54,40 @@ exports.login = async (req, res) => {
     const distributorJWT = jwt.sign({ name }, privateKey, { algorithm: 'HS256' });
 
     res.status(200).json({ distributorJWT });
+}
+
+exports.batteryCurrentConditions = (req, res, next) => {
+    connectionWeb3
+        .getBatteryCurrentConditions(req.body.token)
+        .then((conditions) => {
+            console.log(conditions)
+            res.json(conditions);
+        })
+        .catch(err => {
+            return next(err);
+        });
+}
+
+exports.batteryCurrentLocation = (req, res, next) => {
+    connectionWeb3
+        .getBatteryCurrentLocation(req.body.token)
+        .then((location) => {
+            console.log(location)
+            res.json(location);
+        })
+        .catch(err => {
+            return next(err);
+        });
+}
+
+exports.batteryCurrentHolder = (req, res, next) => {
+    connectionWeb3
+        .getBatteryCurrentHolder(req.body.token)
+        .then((holder) => {
+            console.log(holder)
+            res.json(holder);
+        })
+        .catch(err => {
+            return next(err);
+        });
 }

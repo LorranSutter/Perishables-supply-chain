@@ -104,3 +104,5 @@ dist
 .tern-port
 backend/src/config/dbURL.json
 backend/src/config/privateKey.json
+backend/src/config/Contract.json
+backend/src/config/ContractAddress.json
