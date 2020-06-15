@@ -16,21 +16,15 @@
 
 ## :runner: How to run
 
-To run the application you are will need to set your own configurations of database and private key. Create the following JSON files in the indicated path and format with your customized configurations:
+To run the application you are will need to set your own configurations of port, database and private key. Create the following .env file in the indicated path and format with your customized configurations:
 
 ```json
-// ./backend/src/config/dbURL.json
-{
-    "dev": "YOUR_DEV_MONGO_URI",
-    "test": "YOUR_TEST_MONGO_URI"
-}
-```
+// ./backend/.env
 
-```json
-// ./backend/src/config/privateKey.json
-{
-    "privateKey": "YOUR_STRONG_PRIVATE_KEY"
-}
+PORT=5000
+MONGODB_URI_DEV="YOUR_DEV_MONGO_URI"
+MONGODB_URI_TEST="YOUR_TEST_MONGO_URI"
+PRIVATE_KEY="YOUR_STRONG_PRIVATE_KEY"
 ```
 
 Also, to establish a connection to smart contracts, we will need ABI and contract address. Create the following files in the indicated path and format:
