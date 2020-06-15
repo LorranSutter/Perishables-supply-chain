@@ -1,6 +1,7 @@
+require('dotenv').config();
+
 const express = require('express');
 const createError = require('http-errors');
-// const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
 

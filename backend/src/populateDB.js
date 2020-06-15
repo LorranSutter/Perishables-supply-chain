@@ -1,9 +1,10 @@
+require('dotenv').config();
+
 const async = require('async');
 const InitiateMongoServer = require('./db/connection');
 
 const mongoose = require('mongoose');
-const { dev } = require('./config/dbURL.json');
-const mongoURI = process.env.MONGODB_URI || dev;
+const mongoURI = process.env.MONGODB_URI_DEV;
 
 InitiateMongoServer(mongoURI, true);
 
