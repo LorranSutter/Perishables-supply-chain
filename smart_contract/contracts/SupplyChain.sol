@@ -37,13 +37,9 @@ contract SupplyChain is ERC721Token, AccessControl {
         admin = msg.sender;
     }
 
-    modifier onlyDistributor() {
-        require(
-            hasRole(DISTRIBUTOR_ROLE, msg.sender),
-            "Caller is not a Distributor"
-        );
-        _;
-    }
+    event ManufacturerAdded(address _manufacturer);
+    event TransporterAdded(address _transporter);
+    event DistributorAdded(address _distributor);
 
     modifier onlyManufacturer() {
         require(
@@ -61,21 +57,32 @@ contract SupplyChain is ERC721Token, AccessControl {
         _;
     }
 
+    modifier onlyDistributor() {
+        require(
+            hasRole(DISTRIBUTOR_ROLE, msg.sender),
+            "Caller is not a Distributor"
+        );
+        _;
+    }
+
     //Add manufacturer
     function addManufacturer(address manufacturer) public {
         require(msg.sender == admin, "only admin");
         _setupRole(FACTORY_ROLE, manufacturer);
+        emit ManufacturerAdded(manufacturer);
     }
 
     //Add transporter
     function addTransporter(address transporter) public {
         require(msg.sender == admin, "only admin");
         _setupRole(TRANSPORT_ROLE, transporter);
+        emit TransporterAdded(transporter);
     }
 
     function addDistributor(address distributor) public {
         require(msg.sender == admin, "only admin");
         _setupRole(DISTRIBUTOR_ROLE, distributor);
+        emit DistributorAdded(distributor);
     }
 
     //Distributor Deposit money to order the battery by next function
