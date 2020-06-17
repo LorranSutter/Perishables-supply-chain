@@ -10,7 +10,7 @@ let web3;
 let contract;
 
 (async () => {
-    web3 = new Web3("http://127.0.0.1:9545/");
+    web3 = new Web3(process.env.BLOCKCHAIN_EMULATOR_URI);
     contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
 })();
 
