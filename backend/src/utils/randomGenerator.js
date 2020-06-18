@@ -11,6 +11,10 @@ exports.randomString = (size) => {
     return text;
 }
 
+exports.randomNumber = (min, max) => {
+    return parseInt(Math.random() * (max - min) + min);
+}
+
 exports.randomAddress = () => {
 
     // Ensure the private key is valid
@@ -31,10 +35,10 @@ exports.randomAddress = () => {
     return address;
 }
 
-exports.newDistributor = () => {
+exports.newDistributor = (name, password, address) => {
     return {
-        name: this.randomString(10),
-        password: this.randomString(15),
-        address: this.randomAddress()
+        name: name || this.randomString(10),
+        password: password || this.randomString(15),
+        address: address || this.randomAddress()
     }
 }

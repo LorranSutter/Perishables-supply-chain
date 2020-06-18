@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "populate": "node src/populateDB.js",
+    "populate": "node src/populate.js",
     "test": "cross-env NODE_ENV=test jest ./tests"
   },
   "jest": {

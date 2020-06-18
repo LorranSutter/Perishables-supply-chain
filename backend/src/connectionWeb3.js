@@ -14,7 +14,8 @@ let contract;
 
 (async () => {
     web3 = new Web3(process.env.BLOCKCHAIN_EMULATOR_URI);
-    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    const accounts = await web3.eth.getAccounts();
+    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS, { from: accounts[0] });
 })();
 
 const connectionWeb3 = {
