@@ -10,7 +10,7 @@
 
 <p align="center">
   
-<img src='https://res.cloudinary.com/lorransutter/image/upload/v1592088014/Perishables_supply_chain/Flow_chart.png' height=500/>
+<img src='https://res.cloudinary.com/lorransutter/image/upload/v1592088014/Perishables_supply_chain/Flow_chart.png'/>
 
 </p>
 
