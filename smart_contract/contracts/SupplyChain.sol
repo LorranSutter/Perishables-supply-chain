@@ -8,28 +8,22 @@ import "./ERC721Token.sol";
 
 contract SupplyChain is ERC721Token, AccessControl {
     using Address for address;
-    using SafeMath for uint256;
 
     bytes32 public constant MANUFACTURER_ROLE = keccak256("MANUFACTURER_ROLE");
     bytes32 public constant TRANSPORT_ROLE = keccak256("TRANSPORT_ROLE");
     bytes32 public constant DISTRIBUTOR_ROLE = keccak256("DISTRIBUTOR_ROLE");
 
     address public admin;
-    //Distributor's state variable
-    address payable public toFactory;
-    uint256 battQty;
-    bool success;
 
     struct Battery {
         uint256 id;
         string manufacturer;
         bytes6 serialno;
         int16 thermal;
+        bytes25 location;
         address currentOwner;
-        bytes25 location; // latitude -90.00000000 longitude -180.00000000
     }
 
-    // mapping(address => mapping(uint256 => Battery)) public distributorToBattery;
     mapping(uint256 => Battery) public batteries;
     uint256 public nextId;
 
@@ -86,31 +80,8 @@ contract SupplyChain is ERC721Token, AccessControl {
         _setupRole(DISTRIBUTOR_ROLE, distributor);
     }
 
-    //Distributor Deposit money to order the battery by next function
-    function deposit() public payable onlyDistributor {}
-
-    // Distributor Order battery (Only Distribiutor Role can call this function)
-    function _orderBattery(
-        address payable to,
-        uint256 qty,
-        uint256 advPrice
-    ) public payable onlyDistributor() {
-        to.transfer(advPrice);
-        battQty = qty;
-    }
-
-    //distributor recieved the battery and pays balance amount (onlyDistributor)
-    function _acceptBattery(address payable to, uint256 balPrice)
-        public
-        onlyDistributor()
-        returns (bool)
-    {
-        to.transfer(balPrice);
-        success = true;
-    }
-
     //mint Battery function (onlyManufacturer)
-    function _makeBattery(
+    function makeBattery(
         string memory _manufacturer,
         bytes6 _serialno,
         int16 _thermal,
@@ -122,59 +93,32 @@ contract SupplyChain is ERC721Token, AccessControl {
             _manufacturer,
             _serialno,
             _thermal,
-            msg.sender,
-            _location
+            _location,
+            msg.sender
         );
         nextId++;
     }
 
-    //Only manufacturer Role
-    function _startTransport(
-        uint256 _id,
-        address _adsTransport,
-        int16 _thermal,
-        bytes25 _location
-    ) public onlyManufacturer() onlyCurrentOwner(_id) {
-        batteries[_id].currentOwner = _adsTransport;
-        batteries[_id].thermal = _thermal;
-        batteries[_id].location = _location;
-        _transfer(msg.sender, _adsTransport, _id);
-    }
-
-    function _changeTransporter(
-        uint256 _id,
-        address _newTransporter,
-        int16 _thermal,
-        bytes25 _location
-    ) public onlyTransporter() onlyCurrentOwner(_id) {
-        batteries[_id].currentOwner = _newTransporter;
-        batteries[_id].thermal = _thermal;
-        batteries[_id].location = _location;
-        _transfer(msg.sender, _newTransporter, _id);
-    }
-
     //Only transporter
-    function _thermalMonitor(
+    function thermalMonitor(
         uint256 _id,
         int16 _thermal,
         bytes25 _location
     ) public onlyTransporter() onlyCurrentOwner(_id) {
         batteries[_id].thermal = _thermal;
         batteries[_id].location = _location;
-        _transfer(msg.sender, msg.sender, _id);
     }
 
-    //Only Transporter Should call
-    function _endofTransportation(
+    function transferBattery(
         uint256 _id,
-        address _distAddress,
+        address _to,
         int16 _thermal,
         bytes25 _location
-    ) public onlyTransporter() onlyCurrentOwner(_id) {
-        batteries[_id].currentOwner = _distAddress;
+    ) public onlyCurrentOwner(_id) {
+        batteries[_id].currentOwner = _to;
         batteries[_id].thermal = _thermal;
         batteries[_id].location = _location;
-        _transfer(msg.sender, _distAddress, _id);
+        _transfer(msg.sender, _to, _id);
     }
 
     //Just to check the value
@@ -193,25 +137,4 @@ contract SupplyChain is ERC721Token, AccessControl {
             batteries[_id].currentOwner
         );
     }
-
-    // //Just to check the value
-    // function getBatteryInfo(uint256 _id)
-    //     public
-    //     view
-    //     returns (
-    //         string memory,
-    //         bytes6,
-    //         int16,
-    //         address,
-    //         bytes25
-    //     )
-    // {
-    //     return (
-    //         batteries[_id].manufacturer,
-    //         batteries[_id].serialno,
-    //         batteries[_id].thermal,
-    //         batteries[_id].currentOwner,
-    //         batteries[_id].location
-    //     );
-    // }
 }

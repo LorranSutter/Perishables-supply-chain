@@ -68,7 +68,7 @@ contract("Contract Test", (accounts) => {
         it('A - should mint a new battery token', async () => {
             await contractInstance.addManufacturer(manufacturer, { from: admin });
 
-            const tx = await contractInstance._makeBattery(
+            const tx = await contractInstance.makeBattery(
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
@@ -89,7 +89,7 @@ contract("Contract Test", (accounts) => {
             await contractInstance.addManufacturer(manufacturer, { from: admin });
             await contractInstance.addTransporter(transporter1, { from: admin });
 
-            await contractInstance._makeBattery(
+            await contractInstance.makeBattery(
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
@@ -97,7 +97,7 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
-            const tx = await contractInstance._startTransport(
+            const tx = await contractInstance.transferBattery(
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
@@ -119,7 +119,7 @@ contract("Contract Test", (accounts) => {
             await contractInstance.addTransporter(transporter1, { from: admin });
             await contractInstance.addTransporter(transporter2, { from: admin });
 
-            await contractInstance._makeBattery(
+            await contractInstance.makeBattery(
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
@@ -127,7 +127,7 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
-            await contractInstance._startTransport(
+            await contractInstance.transferBattery(
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
@@ -135,7 +135,7 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
-            const tx = await contractInstance._changeTransporter(
+            const tx = await contractInstance.transferBattery(
                 0,
                 transporter2,
                 randomGenerator.randomNumber(10, 20),
@@ -157,7 +157,7 @@ contract("Contract Test", (accounts) => {
             await contractInstance.addTransporter(transporter1, { from: admin });
             await contractInstance.addDistributor(distributor, { from: admin });
 
-            await contractInstance._makeBattery(
+            await contractInstance.makeBattery(
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
@@ -165,7 +165,7 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
-            await contractInstance._startTransport(
+            await contractInstance.transferBattery(
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
@@ -173,7 +173,7 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
-            const tx = await contractInstance._endofTransportation(
+            const tx = await contractInstance.transferBattery(
                 0,
                 distributor,
                 randomGenerator.randomNumber(10, 20),
@@ -199,7 +199,7 @@ contract("Contract Test", (accounts) => {
             await contractInstance.addManufacturer(manufacturer, { from: admin });
             await contractInstance.addTransporter(transporter1, { from: admin });
 
-            await contractInstance._makeBattery(
+            await contractInstance.makeBattery(
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
@@ -207,7 +207,7 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
-            await contractInstance._startTransport(
+            await contractInstance.transferBattery(
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
@@ -215,7 +215,7 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
-            await contractInstance._thermalMonitor(
+            await contractInstance.thermalMonitor(
                 0,
                 newThermal,
                 newLocation,
