@@ -165,6 +165,8 @@ contract("Contract Test", (accounts) => {
                 { from: manufacturer }
             )
 
+            await contractInstance.orderBattery(0, { from: distributor });
+
             await contractInstance.transferBattery(
                 0,
                 transporter1,
@@ -198,6 +200,7 @@ contract("Contract Test", (accounts) => {
 
             await contractInstance.addManufacturer(manufacturer, { from: admin });
             await contractInstance.addTransporter(transporter1, { from: admin });
+            await contractInstance.addDistributor(distributor, { from: admin });
 
             await contractInstance.makeBattery(
                 randomGenerator.randomString(10),
@@ -206,6 +209,8 @@ contract("Contract Test", (accounts) => {
                 crypto.randomBytes(25),
                 { from: manufacturer }
             )
+
+            await contractInstance.orderBattery(0, { from: distributor });
 
             await contractInstance.transferBattery(
                 0,
@@ -222,7 +227,7 @@ contract("Contract Test", (accounts) => {
                 { from: transporter1 }
             )
 
-            const info = await contractInstance.getBatteryTrackingInfo(0);
+            const info = await contractInstance.getBatteryTrackingInfo(0, { from: distributor });
 
             assert.equal(info[0], newThermal, `Current termal should be ${newThermal}`);
             assert.equal(info[1], ethUtil.bufferToHex(newLocation), `Current location should be ${newLocation}`);

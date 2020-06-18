@@ -21,19 +21,24 @@ contract SupplyChain is ERC721Token, AccessControl {
         bytes6 serialno;
         int16 thermal;
         bytes25 location;
-        address currentOwner;
+        address requestingDistributor;
     }
 
-    mapping(uint256 => Battery) public batteries;
-    uint256 public nextId;
+    mapping(uint256 => Battery) private batteries;
+    uint256 private nextId;
 
     constructor(string memory _tokenURIBase) public ERC721Token(_tokenURIBase) {
         admin = msg.sender;
     }
 
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Only Admin");
+        _;
+    }
+
     modifier onlyManufacturer() {
         require(
-            hasRole(MANUFACTURER_ROLE, msg.sender),
+            super.hasRole(MANUFACTURER_ROLE, msg.sender),
             "Caller is not a Manufacturer"
         );
         _;
@@ -41,7 +46,7 @@ contract SupplyChain is ERC721Token, AccessControl {
 
     modifier onlyTransporter() {
         require(
-            hasRole(TRANSPORT_ROLE, msg.sender),
+            super.hasRole(TRANSPORT_ROLE, msg.sender),
             "Caller is not a Transporter"
         );
         _;
@@ -49,62 +54,64 @@ contract SupplyChain is ERC721Token, AccessControl {
 
     modifier onlyDistributor() {
         require(
-            hasRole(DISTRIBUTOR_ROLE, msg.sender),
+            super.hasRole(DISTRIBUTOR_ROLE, msg.sender),
             "Caller is not a Distributor"
         );
         _;
     }
 
-    modifier onlyCurrentOwner(uint256 _id) {
+    modifier onlyRequestingDistributor(uint256 _id) {
         require(
-            msg.sender == batteries[_id].currentOwner,
-            "Caller is not a the Current Owner"
+            batteries[_id].requestingDistributor == msg.sender,
+            "Caller is not the Requesting Distributor"
         );
         _;
     }
 
-    //Add manufacturer
-    function addManufacturer(address manufacturer) public {
-        require(msg.sender == admin, "only admin");
-        _setupRole(MANUFACTURER_ROLE, manufacturer);
+    modifier onlyOwner(uint256 _id) {
+        require(super.ownerOf(_id) == msg.sender, "Caller is not a the Owner");
+        _;
     }
 
-    //Add transporter
-    function addTransporter(address transporter) public {
-        require(msg.sender == admin, "only admin");
-        _setupRole(TRANSPORT_ROLE, transporter);
+    function addManufacturer(address manufacturer) public onlyAdmin() {
+        super._setupRole(MANUFACTURER_ROLE, manufacturer);
     }
 
-    function addDistributor(address distributor) public {
-        require(msg.sender == admin, "only admin");
-        _setupRole(DISTRIBUTOR_ROLE, distributor);
+    function addTransporter(address transporter) public onlyAdmin() {
+        super._setupRole(TRANSPORT_ROLE, transporter);
     }
 
-    //mint Battery function (onlyManufacturer)
+    function addDistributor(address distributor) public onlyAdmin() {
+        super._setupRole(DISTRIBUTOR_ROLE, distributor);
+    }
+
     function makeBattery(
         string memory _manufacturer,
         bytes6 _serialno,
         int16 _thermal,
         bytes25 _location
     ) public onlyManufacturer() {
-        _mint(msg.sender, nextId);
+        super._mint(msg.sender, nextId);
         batteries[nextId] = Battery(
             nextId,
             _manufacturer,
             _serialno,
             _thermal,
             _location,
-            msg.sender
+            address(0)
         );
         nextId++;
     }
 
-    //Only transporter
+    function orderBattery(uint256 _id) public onlyDistributor() {
+        batteries[_id].requestingDistributor = msg.sender;
+    }
+
     function thermalMonitor(
         uint256 _id,
         int16 _thermal,
         bytes25 _location
-    ) public onlyTransporter() onlyCurrentOwner(_id) {
+    ) public onlyTransporter() onlyOwner(_id) {
         batteries[_id].thermal = _thermal;
         batteries[_id].location = _location;
     }
@@ -114,17 +121,16 @@ contract SupplyChain is ERC721Token, AccessControl {
         address _to,
         int16 _thermal,
         bytes25 _location
-    ) public onlyCurrentOwner(_id) {
-        batteries[_id].currentOwner = _to;
+    ) public onlyOwner(_id) {
         batteries[_id].thermal = _thermal;
         batteries[_id].location = _location;
-        _transfer(msg.sender, _to, _id);
+        super._transfer(msg.sender, _to, _id);
     }
 
-    //Just to check the value
     function getBatteryTrackingInfo(uint256 _id)
         public
         view
+        onlyRequestingDistributor(_id)
         returns (
             int16,
             bytes25,
@@ -134,7 +140,7 @@ contract SupplyChain is ERC721Token, AccessControl {
         return (
             batteries[_id].thermal,
             batteries[_id].location,
-            batteries[_id].currentOwner
+            super.ownerOf(_id)
         );
     }
 }
