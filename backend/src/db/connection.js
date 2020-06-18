@@ -9,8 +9,6 @@ const InitiateMongoServer = async (mongoURI) => {
             useFindAndModify: false
             // useCreateIndex: true
         });
-        console.log("Connected to DB !!");
-
         const db = mongoose.connection;
 
         //Bind connection to error event (to get notification of connection errors)

@@ -53,40 +53,16 @@ exports.login = async (req, res) => {
 
     const distributorJWT = jwt.sign({ name }, process.env.PRIVATE_KEY, { algorithm: 'HS256' });
 
-    res.status(200).json({ distributorJWT });
+    res.status(200).json({ distributorJWT, address: distributor.address });
 }
 
-exports.batteryCurrentConditions = (req, res, next) => {
+exports.getBatteryTrackingInfo = (req, res, next) => {
     connectionWeb3
-        .getBatteryCurrentConditions(req.body.token)
-        .then((conditions) => {
-            console.log(conditions)
-            res.json(web3.utils.toAscii(bytes));
-        })
-        .catch(err => {
-            return next(err);
-        });
-}
-
-exports.batteryCurrentLocation = (req, res, next) => {
-    connectionWeb3
-        .getBatteryCurrentLocation(req.body.token)
-        .then((location) => {
-            console.log(location)
-            //web3.utils.toAscii(bytes)
-            res.json(location);
-        })
-        .catch(err => {
-            return next(err);
-        });
-}
-
-exports.batteryCurrentHolder = (req, res, next) => {
-    connectionWeb3
-        .getBatteryCurrentHolder(req.body.token)
-        .then((holder) => {
-            console.log(holder)
-            res.json(holder);
+        .getBatteryTrackingInfo(req.params.tokenId)
+        .then((info) => {
+            console.log(info)
+            // TODO web3.utils.toAscii(bytes)
+            res.json(info);
         })
         .catch(err => {
             return next(err);

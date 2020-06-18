@@ -1,7 +1,10 @@
 const Web3 = require('web3');
 
-const addressJSON = require('./config/ContractAddress.json');
-const contractJSON = require('./config/Contract.json');
+// const addressJSON = require('./config/ContractAddress.json');
+// const contractJSON = require('./config/Contract.json');
+
+const addressJSON = require('../../smart_contract/build/SupplyChainAddress.json');
+const contractJSON = require('../../smart_contract/build/contracts/SupplyChain.json');
 
 const CONTRACT_ADDRESS = addressJSON.address;
 const CONTRACT_ABI = contractJSON.abi;
@@ -16,23 +19,10 @@ let contract;
 
 const connectionWeb3 = {
 
-    async getBatteryCurrentConditions(distributorAddress, token) {
+    // TODO convert to bignumber
+    async getBatteryTrackingInfo(distributorAddress, tokenId) {
         return await contract.methods
-            .getBatteryCurrentConditions(token)
-            .send({ from: distributorAddress })
-            .call();
-    },
-
-    async getBatteryCurrentLocation(distributorAddress, token) {
-        return await contract.methods
-            .getBatteryCurrentLocation(token)
-            .send({ from: distributorAddress })
-            .call();
-    },
-
-    async getBatteryCurrentHolder(distributorAddress, token) {
-        return await contract.methods
-            .getBatteryCurrentHolder(token)
+            .getBatteryTrackingInfo(tokenId)
             .send({ from: distributorAddress })
             .call();
     }

@@ -26,6 +26,8 @@ MONGODB_URI_DEV="YOUR_DEV_MONGO_URI"
 MONGODB_URI_TEST="YOUR_TEST_MONGO_URI"
 PRIVATE_KEY="YOUR_STRONG_PRIVATE_KEY"
 ```
+<!-- TODO BLOCKCHAIN_EMULATOR_URI="http://127.0.0.1:9545/"
+The last command above will generate a new ABI and write contract address in a JSON file. You do not have to worry about importing these info in the frontend though. Also you may change the smart contract and run migrations again to see your changes. -->
 
 Also, to establish a connection to smart contracts, we will need ABI and contract address. Create the following files in the indicated path and format:
 
