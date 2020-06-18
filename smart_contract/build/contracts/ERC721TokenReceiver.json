@@ -79,7 +79,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 520,
-        "sourceUnit": 1446,
+        "sourceUnit": 1372,
         "src": "104:51:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -90,7 +90,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 520,
-        "sourceUnit": 1507,
+        "sourceUnit": 1433,
         "src": "157:51:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1553,10 +1553,10 @@
               "id": 118,
               "name": "Address",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1506,
+              "referencedDeclaration": 1432,
               "src": "6864:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Address_$1506",
+                "typeIdentifier": "t_contract$_Address_$1432",
                 "typeString": "library Address"
               }
             },
@@ -1581,10 +1581,10 @@
               "id": 121,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1445,
+              "referencedDeclaration": 1371,
               "src": "6896:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$1445",
+                "typeIdentifier": "t_contract$_SafeMath_$1371",
                 "typeString": "library SafeMath"
               }
             },
@@ -4683,7 +4683,7 @@
                       "lValueRequested": false,
                       "memberName": "isContract",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1472,
+                      "referencedDeclaration": 1398,
                       "src": "9463:14:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$bound_to$_t_address_$",
@@ -6771,7 +6771,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 520,
-        "sourceUnit": 1446,
+        "sourceUnit": 1372,
         "src": "104:51:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -6782,7 +6782,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 520,
-        "sourceUnit": 1507,
+        "sourceUnit": 1433,
         "src": "157:51:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -8245,10 +8245,10 @@
               "id": 118,
               "name": "Address",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1506,
+              "referencedDeclaration": 1432,
               "src": "6864:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Address_$1506",
+                "typeIdentifier": "t_contract$_Address_$1432",
                 "typeString": "library Address"
               }
             },
@@ -8273,10 +8273,10 @@
               "id": 121,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1445,
+              "referencedDeclaration": 1371,
               "src": "6896:8:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$1445",
+                "typeIdentifier": "t_contract$_SafeMath_$1371",
                 "typeString": "library SafeMath"
               }
             },
@@ -11375,7 +11375,7 @@
                       "lValueRequested": false,
                       "memberName": "isContract",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1472,
+                      "referencedDeclaration": 1398,
                       "src": "9463:14:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$bound_to$_t_address_$",
@@ -13433,7 +13433,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.0",
-  "updatedAt": "2020-06-17T20:51:20.398Z",
+  "updatedAt": "2020-06-18T18:21:00.326Z",
   "devdoc": {
     "methods": {
       "onERC721Received(address,address,uint256,bytes)": {
