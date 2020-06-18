@@ -178,31 +178,20 @@ contract SupplyChain is ERC721Token, AccessControl {
     }
 
     //Just to check the value
-    function getBatteryThermal(uint256 _id)
+    function getBatteryTrackingInfo(uint256 _id)
         public
         view
-        onlyDistributor()
-        returns (int16)
+        returns (
+            int16,
+            bytes25,
+            address
+        )
     {
-        return (batteries[_id].thermal);
-    }
-
-    function getBatteryLocation(uint256 _id)
-        public
-        view
-        onlyDistributor()
-        returns (bytes25)
-    {
-        return (batteries[_id].location);
-    }
-
-    function getBatteryCurrentOwner(uint256 _id)
-        public
-        view
-        onlyDistributor()
-        returns (address)
-    {
-        return (batteries[_id].currentOwner);
+        return (
+            batteries[_id].thermal,
+            batteries[_id].location,
+            batteries[_id].currentOwner
+        );
     }
 
     // //Just to check the value

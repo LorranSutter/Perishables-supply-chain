@@ -1,3 +1,4 @@
+const ethUtil = require('ethereumjs-util');
 const crypto = require('crypto');
 const BigNumber = require("bignumber.js");
 const truffleAssert = require("truffle-assertions");
@@ -189,4 +190,43 @@ contract("Contract Test", (accounts) => {
             }, 'Fail Transfer in battery token transfer from transporter to distributor');
         });
     });
+
+    describe('03 - Battery data', () => {
+        it('A - should change battery info', async () => {
+            const newThermal = randomGenerator.randomNumber(10, 20);
+            const newLocation = crypto.randomBytes(25);
+
+            await contractInstance.addManufacturer(manufacturer, { from: admin });
+            await contractInstance.addTransporter(transporter1, { from: admin });
+
+            await contractInstance._makeBattery(
+                randomGenerator.randomString(10),
+                crypto.randomBytes(6),
+                randomGenerator.randomNumber(10, 20),
+                crypto.randomBytes(25),
+                { from: manufacturer }
+            )
+
+            await contractInstance._startTransport(
+                0,
+                transporter1,
+                randomGenerator.randomNumber(10, 20),
+                crypto.randomBytes(25),
+                { from: manufacturer }
+            )
+
+            await contractInstance._thermalMonitor(
+                0,
+                newThermal,
+                newLocation,
+                { from: transporter1 }
+            )
+
+            const info = await contractInstance.getBatteryTrackingInfo(0);
+
+            assert.equal(info[0], newThermal, `Current termal should be ${newThermal}`);
+            assert.equal(info[1], ethUtil.bufferToHex(newLocation), `Current location should be ${newLocation}`);
+            assert.equal(info[2], transporter1, `Current transporter should be ${transporter1}`);
+        });
+    })
 });
