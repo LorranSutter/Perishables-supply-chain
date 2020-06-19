@@ -20,7 +20,7 @@ contract SupplyChain is ERC721Token, AccessControl {
         string manufacturer;
         bytes6 serialno;
         int16 thermal;
-        bytes25 location;
+        bytes26 location;
         address requestingDistributor;
     }
 
@@ -89,7 +89,7 @@ contract SupplyChain is ERC721Token, AccessControl {
         string memory _manufacturer,
         bytes6 _serialno,
         int16 _thermal,
-        bytes25 _location
+        bytes26 _location
     ) public onlyManufacturer() {
         super._mint(msg.sender, nextId);
         batteries[nextId] = Battery(
@@ -110,7 +110,7 @@ contract SupplyChain is ERC721Token, AccessControl {
     function thermalMonitor(
         uint256 _id,
         int16 _thermal,
-        bytes25 _location
+        bytes26 _location
     ) public onlyTransporter() onlyOwner(_id) {
         batteries[_id].thermal = _thermal;
         batteries[_id].location = _location;
@@ -120,7 +120,7 @@ contract SupplyChain is ERC721Token, AccessControl {
         uint256 _id,
         address _to,
         int16 _thermal,
-        bytes25 _location
+        bytes26 _location
     ) public onlyOwner(_id) {
         batteries[_id].thermal = _thermal;
         batteries[_id].location = _location;
@@ -133,7 +133,7 @@ contract SupplyChain is ERC721Token, AccessControl {
         onlyRequestingDistributor(_id)
         returns (
             int16,
-            bytes25,
+            bytes26,
             address
         )
     {

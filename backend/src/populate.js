@@ -2,13 +2,12 @@ require('dotenv').config();
 
 const Web3 = require('web3');
 const async = require('async');
-const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 const InitiateMongoServer = require('./db/connection');
 const mongoURI = process.env.MONGODB_URI_DEV;
 
-// InitiateMongoServer(mongoURI, true);
+InitiateMongoServer(mongoURI, true);
 
 const randomGenerator = require('./utils/randomGenerator');
 const Distributor = require('./models/distributor');
@@ -29,12 +28,9 @@ let transporter1;
 let transporter2;
 let distributor;
 
-const addressZero = "0x0000000000000000000000000000000000000000";
-const MANUFACTURER_ROLE = "0xeefb95e842a3287179d933b4460be539a1d5af11aa8b325bb45c5c8dc92de4ed";
-const TRANSPORT_ROLE = "0xb82a77b83aa57abb9bcfbacbdfb3201de26ecd2b35d0d6cf6c3b9bb2cb7026c4";
-const DISTRIBUTOR_ROLE = "0xfbd454f36a7e1a388bd6fc3ab10d434aa4578f811acbbcf33afb1c697486313c";
+const numOfBatteries = 3;
 
-async function init() {
+async function initSmartContractData() {
 
     web3 = new Web3(process.env.BLOCKCHAIN_EMULATOR_URI);
     accounts = await web3.eth.getAccounts();
@@ -48,19 +44,18 @@ async function init() {
 }
 
 function populateRoles(cb) {
-    async.parallel([
+    async.series([
         (cb) => {
             contract.methods
                 .addManufacturer(manufacturer)
                 .send({ from: admin })
                 .then(() => {
                     console.log(`Added manufacturer: ${manufacturer}`);
-                    cb();
                 })
                 .catch(err => {
-                    console.log('Ooppss...', err);
-                    cb();
+                    console.log('Ooppss... addManufacturer', err);
                 })
+                .finally(() => cb())
         },
         (cb) => {
             contract.methods
@@ -68,12 +63,11 @@ function populateRoles(cb) {
                 .send({ from: admin })
                 .then(() => {
                     console.log(`Added transporter: ${transporter1}`);
-                    cb();
                 })
                 .catch(err => {
-                    console.log('Ooppss...', err);
-                    cb();
+                    console.log('Ooppss... addTransporter', err);
                 })
+                .finally(() => cb())
         },
         (cb) => {
             contract.methods
@@ -81,140 +75,174 @@ function populateRoles(cb) {
                 .send({ from: admin })
                 .then(() => {
                     console.log(`Added distributor: ${distributor}`);
-                    cb();
                 })
                 .catch(err => {
-                    console.log('Ooppss...', err);
-                    cb();
+                    console.log('Ooppss...addDistributor', err);
                 })
+                .finally(() => cb())
         }
     ], cb)
 }
+
 
 function populateBatteries(cb) {
+    let batteryArray = []
+    for (let i = 0; i < numOfBatteries; i++) {
+        batteryArray.push(
+            (cb) => {
+                const location = randomGenerator.randomLocation();
+                contract.methods
+                    .makeBattery(
+                        randomGenerator.randomString(10),
+                        randomGenerator.randomSerialNumber(),
+                        randomGenerator.randomInt(10, 20),
+                        location
+                    )
+                    .send({ from: manufacturer, gas: 500000 })
+                    .then(() => {
+                        console.log(`Battery ${i} created`);
+                    })
+                    .catch(err => {
+                        console.log(`OOppss...makeBattery ${i}`, err);
+                    })
+                    .finally(() => cb())
+            }
+        )
+    }
+
+    async.series(batteryArray, cb);
+}
+
+function orderBatteries(cb) {
+    let orderArray = []
+    for (let i = 0; i < numOfBatteries; i++) {
+        orderArray.push(
+            (cb) => {
+                contract.methods
+                    .orderBattery(i)
+                    .send({ from: distributor })
+                    .then(() => {
+                        console.log(`Battery ${i} ordered by distributor ${distributor}`);
+                    })
+                    .catch(err => {
+                        console.log(`OOppss...orderBattery ${i}`, err);
+                    })
+                    .finally(() => cb());
+            }
+        )
+    }
+
+    async.series(orderArray, cb)
+}
+
+function transferBatteries(cb) {
+    let transferArray = []
+    for (let i = 0; i < numOfBatteries - 1; i++) {
+        transferArray.push(
+            (cb) => {
+                contract.methods
+                    .transferBattery(
+                        i,
+                        transporter1,
+                        randomGenerator.randomInt(10, 20),
+                        randomGenerator.randomLocation()
+                    )
+                    .send({ from: manufacturer })
+                    .then(() => {
+                        console.log(`Battery ${i} transfered to transporter ${transporter1}`);
+                    })
+                    .catch(err => {
+                        console.log(`OOppss...transferBattery ${i}`, err);
+                    })
+                    .finally(() => cb())
+            }
+        )
+    }
+
     async.series([
+        ...transferArray,
         (cb) => {
             contract.methods
-                .makeBattery(
-                    randomGenerator.randomString(10),
-                    crypto.randomBytes(6),
-                    randomGenerator.randomNumber(10, 20),
-                    crypto.randomBytes(25)
+                .transferBattery(
+                    2,
+                    transporter1,
+                    randomGenerator.randomInt(10, 20),
+                    randomGenerator.randomLocation()
                 )
                 .send({ from: manufacturer })
                 .then(() => {
-                    console.log('Battery added');
-                    cb();
+                    console.log(`Battery 2 transfered to transporter ${transporter2}`);
                 })
                 .catch(err => {
-                    console.log('OOppss...', err);
-                    cb();
+                    console.log('OOppss...transferBattery 2', err);
                 })
-        },
-        (cb) => {
-            contract.methods
-                .makeBattery(
-                    randomGenerator.randomString(10),
-                    crypto.randomBytes(6),
-                    randomGenerator.randomNumber(10, 20),
-                    crypto.randomBytes(25)
-                )
-                .send({ from: manufacturer })
-                .then(() => {
-                    console.log('Battery added')
-                    cb();
-                })
-                .catch(err => {
-                    console.log('OOppss...', err);
-                    cb();
-                })
-        },
-        (cb) => {
-            contract.methods
-                .makeBattery(
-                    randomGenerator.randomString(10),
-                    crypto.randomBytes(6),
-                    randomGenerator.randomNumber(10, 20),
-                    crypto.randomBytes(25)
-                )
-                .send({ from: manufacturer })
-                .then(() => {
-                    console.log('Battery added')
-                    cb();
-                })
-                .catch(err => {
-                    console.log('OOppss...', err);
-                    cb();
-                })
+                .finally(() => cb())
         }
     ], cb)
 }
 
-function a() {
-    contract.methods
-        .addManufacturer(manufacturer)
-        .send({ from: admin })
-        .then(() => {
-            console.log('Success function');
-        })
-        .catch(err => {
-            console.log('OOppss...', err);
-        })
+function getInfoBatteries(cb) {
+    let infoArray = []
+    for (let i = 0; i < numOfBatteries; i++) {
+        infoArray.push(
+            (cb) => {
+                contract.methods
+                    .getBatteryTrackingInfo(0)
+                    .call({ from: distributor })
+                    .then((info) => {
+                        console.log(`Info from battery ${i}: ${info}`);
+                        console.log(info);
+                    })
+                    .catch(err => {
+                        console.log(`OOppss...getBatteryTrackingInfo ${i}`, err);
+                    })
+                    .finally(() => cb())
+            }
+        )
+    }
+
+    async.series(infoArray, cb)
 }
 
-// const numDistributors = 10;
+function distributorCreate({ name, password, address }, cb) {
+    const newDistributor = new Distributor({ name, password, address });
 
-// let distributors = []
+    newDistributor.save(function (err) {
+        if (err) {
+            cb(err, null)
+            return
+        }
+        console.log('New distributor: ' + newDistributor.name);
+        cb(null, newDistributor)
+    });
+}
 
-// function distributorCreate({ name, password, address }, cb) {
-//     const newDistributor = new Distributor({ name, password, address });
+function populateDistributors(cb) {
+    async.parallel([
+        cb => distributorCreate({
+            name: "distributor",
+            password: 123456,
+            address: distributor
+        }, cb)
+    ], cb);
+}
 
-//     newDistributor.save(function (err) {
-//         if (err) {
-//             cb(err, null)
-//             return
-//         }
-//         console.log('New distributor: ' + newDistributor.name);
-//         distributors.push(newDistributor)
-//         cb(null, newDistributor)
-//     });
-// }
-
-// function populateDistributors(cb) {
-//     let distributorArray = []
-//     for (let i = 0; i < numDistributors; i++) {
-//         distributorArray.push(cb => distributorCreate(randomGenerator.newDistributor(), cb));
-//     }
-
-//     async.parallel(distributorArray, cb);
-// }
-
-// function deleteDatabse(cb) {
-//     console.log('Deleting database');
-//     mongoose.connection.dropDatabase();
-//     console.log('Detabase deleted');
-//     cb();
-// }
-
-// async.series([
-//     deleteDatabse
-//     // populateDistributors
-// ],
-//     function (err) {
-//         if (err) {
-//             console.log('FINAL ERR: ' + err);
-//         }
-//         else {
-//             console.log('Distributors: ' + distributors.length);
-//         }
-
-//         mongoose.connection.close();
-//     });
+function deleteDatabse(cb) {
+    console.log('Deleting database');
+    mongoose.connection.dropDatabase();
+    console.log('Detabase deleted');
+    cb();
+}
 
 async.series([
-    init,
+    initSmartContractData,
     populateRoles,
-    populateBatteries
+    populateBatteries,
+    orderBatteries,
+    transferBatteries,
+    // getInfoBatteries,
+    deleteDatabse,
+    populateDistributors
 ],
     function (err) {
         if (err) {
@@ -223,4 +251,5 @@ async.series([
         else {
             console.log('Success');
         }
+        mongoose.connection.close();
     });

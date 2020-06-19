@@ -13433,7 +13433,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.0",
-  "updatedAt": "2020-06-18T18:21:00.326Z",
+  "updatedAt": "2020-06-19T02:18:05.475Z",
   "devdoc": {
     "methods": {
       "onERC721Received(address,address,uint256,bytes)": {
