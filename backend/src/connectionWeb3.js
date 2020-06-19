@@ -1,7 +1,8 @@
 const Web3 = require('web3');
+const BigNumber = require('bignumber.js')
 
-const addressJSON = require('./config/ContractAddress.json');
-const contractJSON = require('./config/Contract.json');
+const addressJSON = require('../../smart_contract/build/SupplyChainAddress.json');
+const contractJSON = require('../../smart_contract/build/contracts/SupplyChain.json');
 
 const CONTRACT_ADDRESS = addressJSON.address;
 const CONTRACT_ABI = contractJSON.abi;
@@ -11,30 +12,16 @@ let contract;
 
 (async () => {
     web3 = new Web3(process.env.BLOCKCHAIN_EMULATOR_URI);
-    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    const accounts = await web3.eth.getAccounts();
+    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS, { from: accounts[0] });
 })();
 
 const connectionWeb3 = {
-
-    async getBatteryCurrentConditions(distributorAddress, token) {
+    
+    async getBatteryTrackingInfo(distributorAddress, tokenId) {
         return await contract.methods
-            .getBatteryCurrentConditions(token)
-            .send({ from: distributorAddress })
-            .call();
-    },
-
-    async getBatteryCurrentLocation(distributorAddress, token) {
-        return await contract.methods
-            .getBatteryCurrentLocation(token)
-            .send({ from: distributorAddress })
-            .call();
-    },
-
-    async getBatteryCurrentHolder(distributorAddress, token) {
-        return await contract.methods
-            .getBatteryCurrentHolder(token)
-            .send({ from: distributorAddress })
-            .call();
+            .getBatteryTrackingInfo(new BigNumber(tokenId))
+            .call({ from: distributorAddress });
     }
 }
 

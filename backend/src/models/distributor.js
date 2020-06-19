@@ -16,9 +16,7 @@ const DistributorSchema = Schema(
         },
         address: {
             type: String,
-            required: true,
-            // index: true,
-            // unique: true
+            required: true
         },
         registration_date: {
             type: Date,
@@ -55,6 +53,6 @@ DistributorSchema.path('name').validate(function (name) {
 DistributorSchema.path('address').validate(function (address) {
     address = address.replace('0x', '');
     return address.length === 40;
-}, 'Address length must be 42');
+}, 'Address length must be 40');
 
 module.exports = mongoose.model('Distributor', DistributorSchema);

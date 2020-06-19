@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 const InitiateMongoServer = require('../db/connection');
 const mongoURI = process.env.MONGODB_URI_TEST;
 
-describe('Distributor', () => {
+describe('01 - Distributor', () => {
 
     beforeAll(async () => {
         InitiateMongoServer(mongoURI);
@@ -22,59 +22,7 @@ describe('Distributor', () => {
         await mongoose.connection.close();
     });
 
-    it('Should create a new distributor', (done) => {
-        const newDistributor = randomGenerator.newDistributor();
-
-        request
-            .post('/distributors/new')
-            .send(newDistributor)
-            .end(function (err, res) {
-                if (err) { return done(err); }
-
-                expect(res.status).toBe(201);
-                expect(res.body.id).toMatch(/[\d\w]{24}/);
-                expect(res.body.message).toBe(`Distributor ${newDistributor.name} created successfully`);
-
-                done();
-            });
-    });
-
-    it('Cannot create a new distributor, because all fields are not specified', (done) => {
-        request
-            .post('/distributors/new')
-            .send({})
-            .end(function (err, res) {
-                if (err) { return done(err); }
-
-                expect(res.status).toBe(422);
-                expect(res.body.errors).toContainEqual({ "name": "Name must be specified." });
-                expect(res.body.errors).toContainEqual({ "name": "Name has non-alphanumeric characters." });
-                expect(res.body.errors).toContainEqual({ "password": "Password must be specified." });
-                expect(res.body.errors).toContainEqual({ "address": "Address must be specified." });
-
-                done();
-            });
-    });
-
-    it('Cannot create a new distributor, because address is invalid', (done) => {
-        const newDistributor = randomGenerator.newDistributor();
-        newDistributor.address += "123";
-
-        request
-            .post('/distributors/new')
-            .send(newDistributor)
-            .end(function (err, res) {
-                if (err) { return done(err); }
-
-                expect(res.status).toBe(422);
-                expect(res.body.errors).toContainEqual({ "address": "Invalid address." });
-
-                done();
-            });
-    });
-
-
-    it('Should list all distributors', async (done) => {
+    it('A - Should list all distributors', async (done) => {
         const newDistributor1 = new Distributor(randomGenerator.newDistributor());
         const newDistributor2 = new Distributor(randomGenerator.newDistributor());
         const newDistributor3 = new Distributor(randomGenerator.newDistributor());
@@ -117,9 +65,85 @@ describe('Distributor', () => {
                 done();
             });
     });
+});
+describe('02 - Distributor - registration', () => {
 
-    it('Should be able to login', async (done) => {
-        const newDistributor = new Distributor(randomGenerator.newDistributor());
+    beforeAll(async () => {
+        InitiateMongoServer(mongoURI);
+        await mongoose.connection.dropDatabase();
+    });
+
+    afterAll(async () => {
+        await mongoose.connection.dropDatabase();
+        await mongoose.connection.close();
+    });
+
+    it('A - Should create a new distributor', (done) => {
+        const newDistributor = randomGenerator.newDistributor();
+
+        request
+            .post('/distributors/new')
+            .send(newDistributor)
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(201);
+                expect(res.body.id).toMatch(/[\d\w]{24}/);
+                expect(res.body.message).toBe(`Distributor ${newDistributor.name} created successfully`);
+
+                done();
+            });
+    });
+
+    it('B - Cannot create a new distributor, because all fields are not specified', (done) => {
+        request
+            .post('/distributors/new')
+            .send({})
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(422);
+                expect(res.body.errors).toContainEqual({ "name": "Name must be specified." });
+                expect(res.body.errors).toContainEqual({ "name": "Name has non-alphanumeric characters." });
+                expect(res.body.errors).toContainEqual({ "password": "Password must be specified." });
+                expect(res.body.errors).toContainEqual({ "address": "Address must be specified." });
+
+                done();
+            });
+    });
+
+    it('C - Cannot create a new distributor, because address is invalid', (done) => {
+        const newDistributor = randomGenerator.newDistributor();
+        newDistributor.address += "123";
+
+        request
+            .post('/distributors/new')
+            .send(newDistributor)
+            .end(function (err, res) {
+                if (err) { return done(err); }
+
+                expect(res.status).toBe(422);
+                expect(res.body.errors).toContainEqual({ "address": "Invalid address." });
+
+                done();
+            });
+    });
+});
+
+describe('03 - Distributor - login', () => {
+
+    beforeAll(async () => {
+        InitiateMongoServer(mongoURI);
+        await mongoose.connection.dropDatabase();
+    });
+
+    afterAll(async () => {
+        await mongoose.connection.dropDatabase();
+        await mongoose.connection.close();
+    });
+
+    it('A - Should be able to login', async (done) => {
+        const newDistributor = randomGenerator.newDistributor();
 
         await new Distributor(newDistributor).save();
 
@@ -131,12 +155,13 @@ describe('Distributor', () => {
 
                 expect(res.status).toBe(200);
                 expect(res.body.distributorJWT).toMatch(/^[\d\w-_=]+\.[\d\w-_=]+\.?[\d\w-_.+\/=]*$/);
+                expect(res.body.address).toEqual(newDistributor.address);
 
                 done();
             });
     });
 
-    it('Cannot login, because all fields are not specified', (done) => {
+    it('B - Cannot login, because all fields are not specified', (done) => {
         request
             .post('/distributors/login')
             .end(function (err, res) {
@@ -151,7 +176,7 @@ describe('Distributor', () => {
             });
     });
 
-    it('Cannot login, because name is invalid', async (done) => {
+    it('C - Cannot login, because name is invalid', async (done) => {
         const newDistributor = new Distributor(randomGenerator.newDistributor());
         await newDistributor.save();
 
@@ -170,7 +195,7 @@ describe('Distributor', () => {
             });
     });
 
-    it('Cannot login, because password is invalid', async (done) => {
+    it('D - Cannot login, because password is invalid', async (done) => {
         const newDistributor = new Distributor(randomGenerator.newDistributor());
         await newDistributor.save();
 

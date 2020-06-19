@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "populate": "node src/populateDB.js",
+    "populate": "node src/populate.js",
     "test": "cross-env NODE_ENV=test jest ./tests"
   },
   "jest": {
@@ -25,6 +25,7 @@
   "dependencies": {
     "async": "^3.2.0",
     "bcryptjs": "^2.4.3",
+    "bignumber.js": "^9.0.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
