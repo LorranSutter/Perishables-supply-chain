@@ -1,6 +1,6 @@
+const web3 = require('web3');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const web3 = require('web3');
 
 const Distributor = require('../models/distributor');
 const connectionWeb3 = require('../connectionWeb3');
@@ -58,11 +58,13 @@ exports.login = async (req, res) => {
 
 exports.getBatteryTrackingInfo = (req, res, next) => {
     connectionWeb3
-        .getBatteryTrackingInfo(req.params.tokenId)
+        .getBatteryTrackingInfo(req.cookies.address, req.params.tokenId)
         .then((info) => {
-            console.log(info)
-            // TODO web3.utils.toAscii(bytes)
-            res.json(info);
+            res.json({
+                thermal: info[0],
+                location: web3.utils.toAscii(info[1]).replace(/\0/g, '').split(';'),
+                currentOwner: info[2]
+            });
         })
         .catch(err => {
             return next(err);
