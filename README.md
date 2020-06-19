@@ -1,12 +1,36 @@
-# Perishables supply chain
+<h1 align="center">
+   Perishables supply chain
+</h1>
 
-<!-- [Flow chart](https://whimsical.com/N1irbVcNY3NVmQjospMB6d) -->
+<p align="center">
+   Blockchain solution to track batteries through a supply chain, using Solidity, Node.js and ReactJS. Presented as final assingment for BCDV1011 - Design Patterns for Blockchain from <a href='https://www.georgebrown.ca/programs/blockchain-development-program-t175/'>Blockchain Development</a> program from <a href='https://www.georgebrown.ca'>George Brown College</a>.
+</p>
+
+<p align="center">
+    <a href="#triangular_ruler-diagrams">Diagrams</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#runner-how-to-run">How to run</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#book-resources-and-technologies-computer">Resources and technologies</a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/Nas2020">Cherukkatil Naseer</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="https://github.com/TheClockworkOrange">Henry Eriko Mwenge</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="https://github.com/LorranSutter">Lorran Sutter</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="https://github.com/mascarenhaswanja">Wanja Mascarenhas</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="https://github.com/DeadPreZ-101">Zakariya Jasat</a>
+</p>
+
+## :triangular_ruler: Diagrams
+
+### Architecture diagram
 
 <p align="center">
   
 <img src='https://res.cloudinary.com/lorransutter/image/upload/v1592088320/Perishables_supply_chain/Perishables_architecture.png' height=500/>
 
 </p>
+
+### Flow diagram
 
 <p align="center">
   
@@ -69,7 +93,7 @@ migrate --reset
 Install backend dependencies:
 
 ```sh
-## In the another terminal ##
+## In the other terminal ##
 
 # Go to backend application
 cd backend
@@ -96,7 +120,7 @@ npm run dev
 
 ### :syringe: Tests
 
-Both Smart Contract and backend application have its own tests suite. To run the tests execute the following commands.
+Both Smart Contract and backend application have its own tests suite. To run the tests execute the following commands:
 
 ```sh
 # Smart Contracts folder
