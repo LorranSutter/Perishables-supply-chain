@@ -17,7 +17,25 @@ let contract;
 })();
 
 const connectionWeb3 = {
-    
+
+    async addManufacturer(adminAddress, manufacturerAddress) {
+        return await contract.methods
+            .addManufacturer(manufacturerAddress)
+            .send({ from: adminAddress });
+    },
+
+    async addTransporter(adminAddress, transporterAddress) {
+        return await contract.methods
+            .addTransporter(transporterAddress)
+            .send({ from: adminAddress });
+    },
+
+    async addDistributor(adminAddress, distributorAddress) {
+        return await contract.methods
+            .addDistributor(distributorAddress)
+            .send({ from: adminAddress });
+    },
+
     async getBatteryTrackingInfo(distributorAddress, tokenId) {
         return await contract.methods
             .getBatteryTrackingInfo(new BigNumber(tokenId))
