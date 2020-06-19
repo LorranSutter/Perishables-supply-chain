@@ -84,7 +84,7 @@ npm run start
 npm run dev
 ```
 
-#### :syringe: Tests
+### :syringe: Tests
 
 Both Smart Contract and backend application have its own tests suite. To run the tests execute the following commands.
 
