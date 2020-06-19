@@ -66,7 +66,7 @@ If you change your contract, you will have to run migrations again. Just type th
 migrate --reset
 ```
 
-Install backend dependencies and run the project:
+Install backend dependencies:
 
 ```sh
 ## In the another terminal ##
@@ -76,7 +76,17 @@ cd backend
 
 # Install dependencies
 npm install
+```
 
+To kick-start application data, you can run *populate* script, which will write basic data in truffle develop blockchain environment and database:
+
+```sh
+npm run populate
+```
+
+Run the project:
+
+```sh
 # Run the project
 npm run start
 
