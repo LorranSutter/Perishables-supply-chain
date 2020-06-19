@@ -7,7 +7,6 @@ const InitiateMongoServer = async (mongoURI) => {
             useUnifiedTopology: true,
             useNewUrlParser: true,
             useFindAndModify: false
-            // useCreateIndex: true
         });
         const db = mongoose.connection;
 

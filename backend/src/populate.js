@@ -4,17 +4,16 @@ const Web3 = require('web3');
 const async = require('async');
 const mongoose = require('mongoose');
 
+const randomGenerator = require('./utils/randomGenerator');
+const Distributor = require('./models/distributor');
+
 const InitiateMongoServer = require('./db/connection');
 const mongoURI = process.env.MONGODB_URI_DEV;
 
 InitiateMongoServer(mongoURI, true);
 
-const randomGenerator = require('./utils/randomGenerator');
-const Distributor = require('./models/distributor');
-
 const addressJSON = require('../../smart_contract/build/SupplyChainAddress.json');
 const contractJSON = require('../../smart_contract/build/contracts/SupplyChain.json');
-
 const CONTRACT_ADDRESS = addressJSON.address;
 const CONTRACT_ABI = contractJSON.abi;
 
