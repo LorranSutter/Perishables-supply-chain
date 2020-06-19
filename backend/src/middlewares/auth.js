@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 exports.checkLogin = (req, res, next) => {
-    const userToken = req.cookies.userToken;
+    const userToken = req.cookies.distributorJWT;
 
     if (!userToken) {
         res.status(401).send({ message: 'Invalid login/password' });
