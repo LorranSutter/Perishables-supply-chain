@@ -15,6 +15,8 @@ routes.post('/new', distributor_validator.registration, validate, distributor_co
 
 routes.post('/login', distributor_validator.login, validate, distributor_controller.login);
 
+routes.post('/orderBattery/:tokenId', checkLogin, distributor_controller.orderBattery);
+
 routes.get('/batteryInfo/:tokenId', checkLogin, distributor_controller.getBatteryTrackingInfo);
 
 module.exports = routes;
