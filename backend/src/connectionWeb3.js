@@ -44,8 +44,20 @@ const connectionWeb3 = {
 
     async orderBattery(distributorAddress, _id) {
         return await contract.methods
-            .orderBattery(_id)
+            .orderBattery(new BigNumber(_id))
             .send({ from: distributorAddress });
+    },
+
+    async thermalMonitor(currentOwnerAddress, _id, _thermal, _location) {
+        return await contract.methods
+            .thermalMonitor(_id, _thermal, _location)
+            .send({ from: currentOwnerAddress });
+    },
+
+    async transferBattery(currentOwnerAddress, _id, _to, _thermal, _location) {
+        return await contract.methods
+            .transferBattery(new BigNumber(_id), _to, _thermal, _location)
+            .send({ from: currentOwnerAddress });
     },
 
     async getBatteryTrackingInfo(distributorAddress, tokenId) {
