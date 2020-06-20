@@ -18,6 +18,12 @@
     <a href="https://github.com/DeadPreZ-101">Zakariya Jasat</a>
 </p>
 
+<div align="center">
+
+<img src="https://res.cloudinary.com/lorransutter/image/upload/v1592668492/Perishables_supply_chain/SRM_preview.gif" alt="Preview" height=400/>
+
+</div>
+
 ## :runner: How to run
 
 Open your terminal in the folder you want to clone the project
@@ -30,7 +36,7 @@ git clone https://github.com/LorranSutter/Perishables-supply-chain.git
 cd Perishables-supply-chain
 ```
 
-To run the application you are will need to set your own configurations of *port*, *database*, *private key* and *blockchain emulator uri*. Create the following .env file in the indicated path and format with your customized configurations:
+To run the application you will need to set your own configurations of _port_, _database_, _private key_ and _blockchain emulator uri_. Create the following .env file in the indicated path and format with your customized configurations:
 
 ```json
 // ./backend/.env
@@ -42,11 +48,13 @@ PRIVATE_KEY="YOUR_STRONG_PRIVATE_KEY"
 BLOCKCHAIN_EMULATOR_URI="http://127.0.0.1:9545/"
 ```
 
-Now you will need two opened terminals to run the project. One for truffle to simulate the EVM and another one for the server.
+Now you will need three opened terminals to run the project. One for truffle to simulate the EVM, another one for the server and a third one for the frontend.
 
 Truffle will run on http://127.0.0.1:9545/
 
 Server will run on http://localhost:5000/
+
+Frontend will run on http://localhost:3000/
 
 ```sh
 ## In the first terminal ##
@@ -82,7 +90,7 @@ cd backend
 npm install
 ```
 
-To kick-start application data, you can run *populate* script, which will write basic data in truffle develop blockchain environment and database:
+To kick-start application data, you can run _populate_ script, which will write basic data in truffle develop blockchain environment and database:
 
 ```sh
 npm run populate
@@ -97,6 +105,26 @@ npm run start
 # Or to use nodemon
 npm run dev
 ```
+
+Finally run the frontend application:
+
+```sh
+## In the third terminal ##
+
+# Go to frontend application
+cd backend
+
+# Install dependencies
+npm install
+
+# Run the project
+npm run start
+```
+
+#### Login credentials
+
+- username: distributor
+- password: 123456
 
 ### :syringe: Tests
 
@@ -142,4 +170,6 @@ npm run test
 3. Frontend
    - [Rimble](https://rimble.consensys.design/) - design system
    - [ReactJS](https://reactjs.org/) - frontend library
+   - [React router dom](https://www.npmjs.com/package/react-router-dom) - routing and navigation for react apps
+   - [React-cookie](https://www.npmjs.com/package/react-cookie) - cookie interaction for React applications
    - [Axios](https://www.npmjs.com/package/axios) - HTTP requests
