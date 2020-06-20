@@ -1,5 +1,5 @@
-import React, { useState, useLayoutEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 import api from '../../services/api';
@@ -8,14 +8,11 @@ import styles from './styles.module.css'
 
 const Login = () => {
 
+    const [cookies, setCookie] = useCookies();
+
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
-
-    useLayoutEffect(() => {
-        document.body.style.backgroundColor = "#E5E5E5"; 
-        document.body.style.margin = "0";
-    }, []);
 
     function handleLoginChange(e) {
         setName(e.target.value);
@@ -32,7 +29,9 @@ const Login = () => {
                 .post('/distributors/login', { name, password })
                 .then(res => {
                     if (res.status === 200) {
-                        history.push('/login');
+                        setCookie('distributorJWT', res.data.distributorJWT);
+                        setCookie('address', res.data.address);
+                        history.push('/battery');
                     } else {
                         history.push('/wrong', { message: 'Invalid Username/Password' });
                         return function cleanup() { }
@@ -55,8 +54,8 @@ const Login = () => {
                         <h1>Login</h1>
                         <input
                             type="text"
-                            name="login"
-                            id="login"
+                            name="name"
+                            id="name"
                             placeholder="Username"
                             value={name}
                             onChange={handleLoginChange}
@@ -74,12 +73,7 @@ const Login = () => {
                                 <button id="buttonLogin">
                                     Login
                                 </button>
-                             </a>
-                            <Link to="/">
-                                <button id="buttonCancel">
-                                    Cancel
-                                </button>
-                            </Link>
+                            </a>
                         </div>
                     </form>
                 </div>

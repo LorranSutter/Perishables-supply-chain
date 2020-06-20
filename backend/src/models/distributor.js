@@ -22,7 +22,12 @@ const DistributorSchema = Schema(
             type: Date,
             required: true,
             default: new Date()
-        }
+        },
+        batteries: [
+            {
+                type: Number
+            }
+        ]
     }
 );
 

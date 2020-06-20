@@ -5,6 +5,8 @@ import Login from './components/Login';
 import Battery from './components/Battery';
 import Wrong from './components/Error';
 
+import './global.css'
+
 export default function App() {
   return (
     <BrowserRouter>

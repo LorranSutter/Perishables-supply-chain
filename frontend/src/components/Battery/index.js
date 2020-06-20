@@ -1,75 +1,93 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+
+import { Box } from 'rimble-ui';
 
 import api from '../../services/api';
 import styles from './styles.module.css';
 
-import HistoryTrack from './historyTrack';
+import BatteryTable from './batteryTable';
 
 const Battery = () => {
 
-    const [track, setTrack] = useState(null);
-
-    const [id, setId] = useState('');
-    const [thermal, setThermal] = useState("");
-    const [location, setLocation] = useState("");
-    const [currentOwner, setCurrentOwner] = useState("");
+    const [batteriesInfo, setBatteriesInfo] = useState([]);
 
     const [cookies, setCookie, removeCookie] = useCookies();
 
     const history = useHistory();
 
     useEffect(() => {
-        if (!cookies.id) {
-            history.push('/wrong', { message: 'Id Battery' });
+        if (!cookies.distributorJWT || !cookies.address) {
+            history.push('/wrong', { message: "Shouldn't you be logged in?" });
             return function cleanup() { }
         }
-        setId(cookies.id);
 
         try {
             api
-            .get(`getBatteryTrackingInfo`)
-            .then(res => {
-                if (res.status === 200) {
-                    setThermal(res.data.battery.thermal)
-                    setLocation(res.data.battery.location);
-                    setCurrentOwner(res.battery.owner);                  
-                } else {
-                    history.push('/wrong');
+                .get('/distributors/getBatteries', { withCredentials: true })
+                .then(res => {
+                    if (res.status === 200) {
+                        handleGetBatteryInfo(res.data.batteries);
+                    } else {
+                        history.push('/wrong');
+                        return function cleanup() { }
+                    }
+                })
+                .catch(err => {
+                    history.push('/wrong', { 'message': err });
                     return function cleanup() { }
-                }
-            })
-            .catch(err => {
-                history.push('/wrong', { 'message': err });
-                return function cleanup() { }
-            });
+                });
         } catch (error) {
             alert('Fail.');
         }
     }, []);
 
-    useLayoutEffect(() => {
-        document.body.style.backgroundColor = "#e5e5e5";
-        document.body.style.minWidth = "350px";
-        document.body.style.minHeight = "475px";
-        document.body.style.margin = "2em 3em";
-    }, []);
+    function handleGetBatteryInfo(batteryIds) {
+        batteryIds.map(id => {
+            try {
+                api
+                    .get(`distributors/batteryInfo/${id}`, { withCredentials: true })
+                    .then(res => {
+                        if (res.status === 200) {
+                            const newInfo = {
+                                id: id,
+                                thermal: res.data.thermal,
+                                location: res.data.location,
+                                currentOwner: res.data.currentOwner
+                            }
+                            setBatteriesInfo(batteriesInfo => [...batteriesInfo, newInfo]);
+                        } else {
+                            history.push('/wrong');
+                            return function cleanup() { }
+                        }
+                    })
+                    .catch(err => {
+                        history.push('/wrong', { 'message': err });
+                        return function cleanup() { }
+                    });
+            } catch (error) {
+                alert('Fail.');
+            }
+        })
+    }
 
-    function handleClickLogout(e) {
+    function handleClickLogout() {
+        removeCookie('distributorJWT');
+        removeCookie('address');
         history.push('/login');
     }
 
     return (
-        <>
+        <Box my={50} mx={100} fontSize={4} p={3}>
             <header className={styles.header_container}>
-                <h2>Battery Track</h2>
+                <h2>Battery Current Conditions</h2>
                 <div>
-                   <button onClick={handleClickLogout}>Logout</button>
+                    <button onClick={handleClickLogout}>Logout</button>
                 </div>
             </header>
-            {track}
-        </>
+            <BatteryTable batteriesInfo={batteriesInfo} />
+        </Box>
     );
 }
 

@@ -203,8 +203,8 @@ function getInfoBatteries(cb) {
     async.series(infoArray, cb)
 }
 
-function distributorCreate({ name, password, address }, cb) {
-    const newDistributor = new Distributor({ name, password, address });
+function distributorCreate({ name, password, address, batteries }, cb) {
+    const newDistributor = new Distributor({ name, password, address, batteries });
 
     newDistributor.save(function (err) {
         if (err) {
@@ -221,7 +221,8 @@ function populateDistributors(cb) {
         cb => distributorCreate({
             name: "distributor",
             password: 123456,
-            address: distributor
+            address: distributor,
+            batteries: [0, 1, 2]
         }, cb)
     ], cb);
 }

@@ -56,6 +56,15 @@ exports.login = async (req, res) => {
     res.status(200).json({ distributorJWT, address: distributor.address });
 }
 
+exports.getBatteries = async (req, res) => {
+    const distributor = await Distributor.findOne({ address: req.cookies.address });
+    if (!distributor) {
+        return res.status(401).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ batteries: distributor.batteries });
+}
+
 exports.orderBattery = (req, res, next) => {
     connectionWeb3
         .orderBattery(req.cookies.address, req.params.tokenId)
