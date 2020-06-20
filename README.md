@@ -7,9 +7,7 @@
 </p>
 
 <p align="center">
-    <a href="#triangular_ruler-diagrams">Diagrams</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="#runner-how-to-run">How to run</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="#book-resources-and-technologies-computer">Resources and technologies</a>
+   For architecture, flow diagrams and more detailed explanation, please check <a href='https://github.com/LorranSutter/Perishables-supply-chain/tree/master/Project%20Documents'>Project Documents</a> folder.
 </p>
 
 <p align="center">
@@ -18,24 +16,6 @@
     <a href="https://github.com/LorranSutter">Lorran Sutter</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a href="https://github.com/mascarenhaswanja">Wanja Mascarenhas</a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a href="https://github.com/DeadPreZ-101">Zakariya Jasat</a>
-</p>
-
-## :triangular_ruler: Diagrams
-
-### Architecture diagram
-
-<p align="center">
-  
-<img src='https://res.cloudinary.com/lorransutter/image/upload/v1592088320/Perishables_supply_chain/Perishables_architecture.png' height=500/>
-
-</p>
-
-### Flow diagram
-
-<p align="center">
-  
-<img src='https://res.cloudinary.com/lorransutter/image/upload/v1592088014/Perishables_supply_chain/Flow_chart.png'/>
-
 </p>
 
 ## :runner: How to run
