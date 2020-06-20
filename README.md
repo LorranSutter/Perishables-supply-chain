@@ -96,10 +96,10 @@ To kick-start application data, you can run _populate_ script, which will write 
 npm run populate
 ```
 
-Run the project:
+Run the backedn application:
 
 ```sh
-# Run the project
+# Run backend application
 npm run start
 
 # Or to use nodemon
