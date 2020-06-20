@@ -36,6 +36,12 @@ const connectionWeb3 = {
             .send({ from: adminAddress });
     },
 
+    async makeBattery(manufacturerAddress, _manufacturer, _serialno, _thermal, _location) {
+        return await contract.methods
+            .makeBattery(_manufacturer, _serialno, _thermal, _location)
+            .send({ from: manufacturerAddress, gas: 500000 });
+    },
+
     async getBatteryTrackingInfo(distributorAddress, tokenId) {
         return await contract.methods
             .getBatteryTrackingInfo(new BigNumber(tokenId))

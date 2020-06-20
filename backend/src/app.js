@@ -6,7 +6,7 @@ const compression = require('compression');
 const cors = require('cors');
 
 const admin = require('./routes/admin');
-// const manufacturer = require('./routes/manufacturer');
+const manufacturer = require('./routes/manufacturer');
 const distributor = require('./routes/distributor');
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 
 app.use('/admin', admin);
-// app.use('/manufacturers', manufacturer);
+app.use('/manufacturers', manufacturer);
 app.use('/distributors', distributor);
 
 // catch 404 and forward to error handler
