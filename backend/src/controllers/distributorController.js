@@ -56,6 +56,17 @@ exports.login = async (req, res) => {
     res.status(200).json({ distributorJWT, address: distributor.address });
 }
 
+exports.orderBattery = (req, res, next) => {
+    connectionWeb3
+        .orderBattery(req.cookies.address, req.params.tokenId)
+        .then(() => {
+            res.json({ message: `Battery ${req.params.tokenId} ordered successfully` });
+        })
+        .catch(err => {
+            return next(err);
+        });
+}
+
 exports.getBatteryTrackingInfo = (req, res, next) => {
     connectionWeb3
         .getBatteryTrackingInfo(req.cookies.address, req.params.tokenId)

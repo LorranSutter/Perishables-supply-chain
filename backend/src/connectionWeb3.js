@@ -42,6 +42,12 @@ const connectionWeb3 = {
             .send({ from: manufacturerAddress, gas: 500000 });
     },
 
+    async orderBattery(distributorAddress, _id) {
+        return await contract.methods
+            .orderBattery(_id)
+            .send({ from: distributorAddress });
+    },
+
     async getBatteryTrackingInfo(distributorAddress, tokenId) {
         return await contract.methods
             .getBatteryTrackingInfo(new BigNumber(tokenId))
