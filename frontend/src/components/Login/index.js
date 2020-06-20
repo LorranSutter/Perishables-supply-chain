@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import api from '../../services/api';
 
@@ -7,9 +8,8 @@ import styles from './styles.module.css'
 
 const Login = () => {
 
-    const [login, setLogin] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
-
     const history = useHistory();
 
     useLayoutEffect(() => {
@@ -18,7 +18,7 @@ const Login = () => {
     }, []);
 
     function handleLoginChange(e) {
-        setLogin(e.target.value);
+        setName(e.target.value);
     }
 
     function handlePasswordChange(e) {
@@ -29,10 +29,10 @@ const Login = () => {
         e.preventDefault();
         try {
             api
-                .post('login', { login, password })
+                .post('/distributors/login', { name, password })
                 .then(res => {
                     if (res.status === 200) {
-                        history.push('/battery');
+                        history.push('/login');
                     } else {
                         history.push('/wrong', { message: 'Invalid Username/Password' });
                         return function cleanup() { }
@@ -58,7 +58,7 @@ const Login = () => {
                             name="login"
                             id="login"
                             placeholder="Username"
-                            value={login}
+                            value={name}
                             onChange={handleLoginChange}
                             required />
                         <input
