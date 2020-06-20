@@ -7,10 +7,7 @@ const InitiateMongoServer = async (mongoURI) => {
             useUnifiedTopology: true,
             useNewUrlParser: true,
             useFindAndModify: false
-            // useCreateIndex: true
         });
-        console.log("Connected to DB !!");
-
         const db = mongoose.connection;
 
         //Bind connection to error event (to get notification of connection errors)

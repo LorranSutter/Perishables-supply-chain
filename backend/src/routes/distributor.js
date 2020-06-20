@@ -1,6 +1,7 @@
 const express = require('express');
 
 const distributor_controller = require('../controllers/distributorController');
+const { checkLogin } = require('../middlewares/auth');
 const distributor_validator = require('../middlewares/distributorValidator');
 const { validate } = require('../middlewares/validate');
 
@@ -14,10 +15,8 @@ routes.post('/new', distributor_validator.registration, validate, distributor_co
 
 routes.post('/login', distributor_validator.login, validate, distributor_controller.login);
 
-routes.post('/conditions', distributor_controller.batteryCurrentConditions);
+routes.post('/orderBattery/:tokenId', checkLogin, distributor_controller.orderBattery);
 
-routes.post('/location', distributor_controller.batteryCurrentLocation);
-
-routes.post('/holder', distributor_controller.batteryCurrentHolder);
+routes.get('/batteryInfo/:tokenId', checkLogin, distributor_controller.getBatteryTrackingInfo);
 
 module.exports = routes;

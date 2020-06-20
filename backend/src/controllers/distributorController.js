@@ -1,6 +1,6 @@
+const web3 = require('web3');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const web3 = require('web3');
 
 const Distributor = require('../models/distributor');
 const connectionWeb3 = require('../connectionWeb3');
@@ -53,40 +53,29 @@ exports.login = async (req, res) => {
 
     const distributorJWT = jwt.sign({ name }, process.env.PRIVATE_KEY, { algorithm: 'HS256' });
 
-    res.status(200).json({ distributorJWT });
+    res.status(200).json({ distributorJWT, address: distributor.address });
 }
 
-exports.batteryCurrentConditions = (req, res, next) => {
+exports.orderBattery = (req, res, next) => {
     connectionWeb3
-        .getBatteryCurrentConditions(req.body.token)
-        .then((conditions) => {
-            console.log(conditions)
-            res.json(web3.utils.toAscii(bytes));
+        .orderBattery(req.cookies.address, req.params.tokenId)
+        .then(() => {
+            res.json({ message: `Battery ${req.params.tokenId} ordered successfully` });
         })
         .catch(err => {
             return next(err);
         });
 }
 
-exports.batteryCurrentLocation = (req, res, next) => {
+exports.getBatteryTrackingInfo = (req, res, next) => {
     connectionWeb3
-        .getBatteryCurrentLocation(req.body.token)
-        .then((location) => {
-            console.log(location)
-            //web3.utils.toAscii(bytes)
-            res.json(location);
-        })
-        .catch(err => {
-            return next(err);
-        });
-}
-
-exports.batteryCurrentHolder = (req, res, next) => {
-    connectionWeb3
-        .getBatteryCurrentHolder(req.body.token)
-        .then((holder) => {
-            console.log(holder)
-            res.json(holder);
+        .getBatteryTrackingInfo(req.cookies.address, req.params.tokenId)
+        .then((info) => {
+            res.json({
+                thermal: info[0],
+                location: web3.utils.toAscii(info[1]).replace(/\0/g, '').split(';'),
+                currentOwner: info[2]
+            });
         })
         .catch(err => {
             return next(err);

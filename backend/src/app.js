@@ -5,6 +5,9 @@ const createError = require('http-errors');
 const compression = require('compression');
 const cors = require('cors');
 
+const admin = require('./routes/admin');
+const manufacturer = require('./routes/manufacturer');
+const transporter = require('./routes/transporter');
 const distributor = require('./routes/distributor');
 
 const app = express();
@@ -14,6 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 
+app.use('/admin', admin);
+app.use('/manufacturers', manufacturer);
+app.use('/transporters', transporter);
 app.use('/distributors', distributor);
 
 // catch 404 and forward to error handler

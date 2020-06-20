@@ -72,7 +72,7 @@ contract("Contract Test", (accounts) => {
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -93,7 +93,7 @@ contract("Contract Test", (accounts) => {
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -101,7 +101,7 @@ contract("Contract Test", (accounts) => {
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -123,7 +123,7 @@ contract("Contract Test", (accounts) => {
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -131,7 +131,7 @@ contract("Contract Test", (accounts) => {
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -139,7 +139,7 @@ contract("Contract Test", (accounts) => {
                 0,
                 transporter2,
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: transporter1 }
             )
 
@@ -161,7 +161,7 @@ contract("Contract Test", (accounts) => {
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -171,7 +171,7 @@ contract("Contract Test", (accounts) => {
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -179,7 +179,7 @@ contract("Contract Test", (accounts) => {
                 0,
                 distributor,
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: transporter1 }
             )
 
@@ -196,7 +196,7 @@ contract("Contract Test", (accounts) => {
     describe('03 - Battery data', () => {
         it('A - should change battery info', async () => {
             const newThermal = randomGenerator.randomNumber(10, 20);
-            const newLocation = crypto.randomBytes(25);
+            const newLocation = crypto.randomBytes(26);
 
             await contractInstance.addManufacturer(manufacturer, { from: admin });
             await contractInstance.addTransporter(transporter1, { from: admin });
@@ -206,7 +206,7 @@ contract("Contract Test", (accounts) => {
                 randomGenerator.randomString(10),
                 crypto.randomBytes(6),
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
@@ -216,7 +216,7 @@ contract("Contract Test", (accounts) => {
                 0,
                 transporter1,
                 randomGenerator.randomNumber(10, 20),
-                crypto.randomBytes(25),
+                crypto.randomBytes(26),
                 { from: manufacturer }
             )
 
